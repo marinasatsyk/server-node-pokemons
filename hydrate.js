@@ -1,7 +1,9 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import PokemonModel from "./models/Pokemon.js";
+import UserModel from "./models/User.js";
 import {pokemons} from './mocks/mock-pokemons.js';
+import { users } from "./mocks/mock-user.js";
 
 
 dotenv.config();
@@ -21,8 +23,10 @@ mongoose.connect( `${MONGODB_ADDRESS}`);
 
 export const init = async () => {
     try{
-        await PokemonModel.deleteMany();
-        const res = await PokemonModel.insertMany(pokemons)
+            await PokemonModel.deleteMany();
+            await UserModel.deleteMany();
+            const resP = await PokemonModel.insertMany(pokemons);
+            const resU = await UserModel.insertMany(users);
     }
     catch(err){
         console.log(err);
@@ -32,4 +36,4 @@ export const init = async () => {
     }
 }
 
-init().then(console.log);
+init().then(() => console.log('hydratation is ok'));
